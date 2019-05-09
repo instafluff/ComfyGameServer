@@ -1,0 +1,29 @@
+{
+  "name": "comfygameserver",
+  "version": "1.0.0",
+  "description": "The Fluffiest Online Game Server with Leaderboards & Achievements!",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/instafluff/ComfyGameServer.git"
+  },
+  "keywords": [
+    "comfy",
+    "instafluff",
+    "games"
+  ],
+  "author": "Instafluff",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/instafluff/ComfyGameServer/issues"
+  },
+  "homepage": "https://github.com/instafluff/ComfyGameServer#readme",
+  "dependencies": {
+    "dotenv": "^8.0.0",
+    "express": "^4.16.4",
+    "sqlite3": "^4.0.7"
+  }
+}
