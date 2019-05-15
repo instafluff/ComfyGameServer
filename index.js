@@ -30,7 +30,38 @@ var app = express();
 
 app.get('/', function (req, res) {
   res.send('Hello World');
-})
+});
+
+app.get("/games/:gameId", (req, res) => {
+  db.get( `SELECT * FROM games WHERE gameId="${req.params.gameId}"`, ( err, row ) => {
+    if( err ) { return res.status( 403 ).json( { error: err } ); }
+    if( row ) { return res.json( row ); }
+    return res.status( 403 ).json( { error: "Not Found" } );
+  } );
+});
+
+app.get("/games/:gameId/scores/:leaderboardId", (req, res) => {
+  db.get( `SELECT * FROM leaderboards WHERE gameId="${req.params.gameId}" AND leaderboardId="${req.params.leaderboardId}"`, ( err, row ) => {
+    if( err ) { return res.status( 403 ).json( { error: err } ); }
+    if( row ) { return res.json( row ); }
+    return res.status( 403 ).json( { error: "Not Found" } );
+  } );
+});
+
+app.get("/games/:gameId/scores/:leaderboardId/top", (req, res) => {
+  db.get( `SELECT * FROM leaderboards WHERE gameId="${req.params.gameId}" AND leaderboardId="${req.params.leaderboardId}"`, ( err, row ) => {
+    if( err ) { return res.status( 403 ).json( { error: err } ); }
+    if( row ) {
+      var isAsc = row.isAsc;
+      db.all( `SELECT id,player,score,created FROM scores WHERE gameId="${req.params.gameId}" AND leaderboardId="${req.params.leaderboardId}" ORDER BY score ${isAsc > 0 ? "ASC" : "DESC"} LIMIT 100`, ( err, row ) => {
+        if( err ) { return res.status( 403 ).json( { error: err } ); }
+        return res.json( row );
+      } );
+      return;
+    }
+    return res.status( 403 ).json( { error: "Not Found" } );
+  } );
+});
 
 app.listen( PORT );
 
@@ -60,15 +91,15 @@ db.serialize(function() {
     postScore( "testgame", "leaderboard1", "instafluff1", 2.276 );
     postScore( "testgame", "leaderboard1", "instafluff2", 5.35 );
     postScore( "testgame", "leaderboard1", "instafluff3", -5.276 );
-    db.each( "SELECT * FROM games", ( err, row ) => {
-      console.log( row );
-    } );
-    db.each( "SELECT * FROM leaderboards", ( err, row ) => {
-      console.log( row );
-    } );
-    db.each( "SELECT * FROM scores ORDER BY score DESC", ( err, row ) => {
-      console.log( row );
-    } );
+    // db.each( "SELECT * FROM games", ( err, row ) => {
+    //   console.log( row );
+    // } );
+    // db.each( "SELECT * FROM leaderboards", ( err, row ) => {
+    //   console.log( row );
+    // } );
+    // db.each( "SELECT * FROM scores ORDER BY score DESC", ( err, row ) => {
+    //   console.log( row );
+    // } );
   }
   catch( err ) {
     console.log( "ERROR:", err );
