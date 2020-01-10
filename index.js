@@ -39,6 +39,10 @@ const PORT = process.env.PORT || 9001;
  * - GetAchievementsSet( gameName )
  * - CreateAchievement( APIKey, gameName, achievementId )
  * - PostAchievement( APIKey, gameName, achievementId, username )
+
+ *  Unlockables
+ * - locks and keys
+
  */
 
 /*****************************************************************************
